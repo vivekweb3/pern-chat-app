@@ -7,10 +7,9 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   const { authUser, isLoading } = useAuthContext();
-  console.log("Auth user", authUser);
-  if (isLoading) {
-    return null;
-  }
+
+  if (isLoading) return null;
+
   return (
     <div className="p-4 h-screen flex items-center justify-center">
       <Routes>
