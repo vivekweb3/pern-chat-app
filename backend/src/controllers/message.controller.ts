@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../db/prisma.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
+
 export const sendMessage = async (req: Request, res: Response) => {
   try {
     const { message } = req.body;
@@ -13,6 +15,7 @@ export const sendMessage = async (req: Request, res: Response) => {
         },
       },
     });
+
     // the very first message is being sent, that's why we need to create a new conversation
     if (!conversation) {
       conversation = await prisma.conversation.create({
@@ -47,7 +50,13 @@ export const sendMessage = async (req: Request, res: Response) => {
       });
     }
 
-    // socket io will go here
+    // Socket io will go here
+    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
     res.status(201).json(newMessage);
   } catch (error: any) {
     console.error("Error in sendMessage: ", error.message);
@@ -92,6 +101,7 @@ export const getMessages = async (
 export const getUsersForSidebar = async (req: Request, res: Response) => {
   try {
     const authUserId = req.user.id;
+
     const users = await prisma.user.findMany({
       where: {
         id: {
@@ -104,6 +114,7 @@ export const getUsersForSidebar = async (req: Request, res: Response) => {
         profilePic: true,
       },
     });
+
     res.status(200).json(users);
   } catch (error: any) {
     console.error("Error in getUsersForSidebar: ", error.message);

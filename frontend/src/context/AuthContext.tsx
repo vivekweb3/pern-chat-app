@@ -1,8 +1,8 @@
 import {
-  createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
+  createContext,
   useContext,
   useEffect,
   useState,
@@ -16,6 +16,7 @@ type AuthUserType = {
   profilePic: string;
   gender: string;
 };
+
 const AuthContext = createContext<{
   authUser: AuthUserType | null;
   setAuthUser: Dispatch<SetStateAction<AuthUserType | null>>;
@@ -26,6 +27,7 @@ const AuthContext = createContext<{
   isLoading: true,
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
@@ -34,6 +36,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // logic will go here
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
@@ -42,7 +45,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         if (!res.ok) {
           throw new Error(data.error);
         }
-
         setAuthUser(data);
       } catch (error: any) {
         console.error(error);
@@ -56,7 +58,13 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        authUser,
+        isLoading,
+        setAuthUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

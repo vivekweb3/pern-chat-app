@@ -1,4 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+
 import { Request, Response, NextFunction } from "express";
 import prisma from "../db/prisma.js";
 
@@ -15,6 +16,7 @@ declare global {
     }
   }
 }
+
 const protectRoute = async (
   req: Request,
   res: Response,
@@ -45,6 +47,7 @@ const protectRoute = async (
     }
 
     req.user = user;
+
     next();
   } catch (error: any) {
     console.log("Error in protectRoute middleware", error.message);

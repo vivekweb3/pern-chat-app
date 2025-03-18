@@ -16,9 +16,8 @@ const useLogin = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error);
-      }
+
+      if (!res.ok) throw new Error(data.error);
       setAuthUser(data);
     } catch (error: any) {
       toast.error(error.message);
@@ -29,5 +28,4 @@ const useLogin = () => {
 
   return { loading, login };
 };
-
 export default useLogin;

@@ -10,7 +10,7 @@ const Conversations = () => {
         <Conversation
           key={conversation.id}
           conversation={conversation}
-          emojis={getRandomEmoji()}
+          emoji={getRandomEmoji()}
         />
       ))}
       {loading ? <span className="loading loading-spinner mx-auto" /> : null}

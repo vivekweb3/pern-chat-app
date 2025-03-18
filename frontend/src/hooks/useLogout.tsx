@@ -12,7 +12,6 @@ const useLogout = () => {
       const res = await fetch("/api/auth/logout", {
         method: "POST",
       });
-
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error);
@@ -29,5 +28,4 @@ const useLogout = () => {
 
   return { loading, logout };
 };
-
 export default useLogout;

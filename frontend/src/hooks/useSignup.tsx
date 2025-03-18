@@ -9,9 +9,11 @@ type SignupInputs = {
   confirmPassword: string;
   gender: string;
 };
+
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
+
   const signup = async (inputs: SignupInputs) => {
     try {
       setLoading(true);
@@ -22,10 +24,9 @@ const useSignup = () => {
         },
         body: JSON.stringify(inputs),
       });
-
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
 
+      if (!res.ok) throw new Error(data.error);
       setAuthUser(data);
     } catch (error: any) {
       console.error(error.message);
@@ -37,5 +38,4 @@ const useSignup = () => {
 
   return { loading, signup };
 };
-
 export default useSignup;
